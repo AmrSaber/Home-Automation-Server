@@ -1,8 +1,13 @@
-const fs = require("fs");
-const loader = require('csv-load-sync');
-const _ = require('lodash')
+const fs = require('fs');
+const path = require('path')
 
-let DB = {
+const loader = require('csv-load-sync');
+const _ = require('lodash');
+
+const fileName = path.join(__dirname, './devices.csv');
+const fileHeader = 'id,name,state,pin\n'
+
+const DB = {
     temperature: -1,
     devices: {},
     nextID: 0,
@@ -10,7 +15,7 @@ let DB = {
 };
 
 function readDB() {
-    let devices = loader('devices.csv');
+    let devices = loader(fileName);
     for (let it = 0; it < devices.length; it++) {
         let device = devices[it];
         device.id = parseInt(device.id);
@@ -23,14 +28,13 @@ function readDB() {
 }
 
 function saveDB() {
-    let data = "id,name,state,pin\n";
+    let data = fileHeader;
     for (let k in DB.devices) {
         const { id, name, state, pin } = DB.devices[k];
-        data += `${id},${name},${state},${pin}\n`
+        data += `${id},${name},${state},${pin}\n`;
     }
-    fs.writeFileSync("devices.csv", data, function (err, data) {
-        if (err) console.log(err);
-        console.log("Successfully Written to File.");
+    fs.writeFileSync(fileName, data, function (err, data) {
+        if (err) throw err;
     });
 }
 
@@ -86,8 +90,15 @@ function getTemperature() {
     return DB.temperature
 }
 
+// initialize the .csv file if doesn't exist, read the devices anyway
+if (!fs.existsSync(fileName)) {
+    fs.writeFileSync(fileName, fileHeader)
+}
+
 readDB();
 
+
+// the exported files
 module.exports = {
     getDevices,
     updateDevice,
