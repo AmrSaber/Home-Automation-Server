@@ -4,6 +4,7 @@
   "description": "Back-end for home automation project with back-end on raspberry pi",
   "main": "src/index.js",
   "scripts": {
+    "start:ras": "RAS=1 node src/index.js",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
@@ -16,6 +17,7 @@
     "joi": "^14.3.1",
     "lodash": "^4.17.11",
     "node-cron": "^2.0.3",
+    "onoff": "^4.1.1",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {

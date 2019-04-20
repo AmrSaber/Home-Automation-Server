@@ -5,7 +5,6 @@ const server = require('../server')
 
 const io = new SocketServer(server, {
     cookie: false,
-    // path: '/socket'
 })
 
 io.on('connection', () => {

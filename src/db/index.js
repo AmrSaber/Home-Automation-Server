@@ -3,6 +3,8 @@ const path = require('path')
 const loader = require('csv-load-sync');
 const _ = require('lodash');
 
+const raspberry = require('../raspberry')
+
 const sockets = require('../sockets')
 const { TAG_DEVICE, TAG_TEMPERATURE } = require('../constants')
 
@@ -58,7 +60,11 @@ function updateDevice(id, state) {
     if (state > 1 || state < 0) throw new Error("value of state must be either 0:OFF, 1:ON");
     DB.devices[id].state = state;
     saveDB();
-    sockets.emit(TAG_DEVICE, DB.devices[id])
+
+    const device = DB.devices[id]
+    sockets.emit(TAG_DEVICE, device)
+
+    if (process.env.RAS) raspberry.writePin(device.pin, device.state)
 }
 
 function addDevice(name, pin) {
@@ -79,11 +85,15 @@ function addDevice(name, pin) {
     DB.used_pins.add(pin);
 
     saveDB();
+
+    if (process.env.RAS) raspberry.writePin(device.pin, device.state)
+    
     return device;
 }
 
 function deleteDevice(id) {
     if (DB.devices.hasOwnProperty(id)) {
+        if (process.env.RAS) raspberry.writePin(DB.devices[id].pin, 0)
         DB.used_pins.delete(DB.devices[id].pin);
         delete DB.devices[id];
     }
