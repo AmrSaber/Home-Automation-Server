@@ -47,6 +47,10 @@ function getDevices() {
     return ret;
 }
 
+function getDevice(id){
+    return DB.devices[id]
+}
+
 function updateDevice(id, state) {
     if (!DB.devices.hasOwnProperty(id)) throw new Error("No device found with given id");
     if (state > 1 || state < 0) throw new Error("value of state must be either 0:OFF, 1:ON");
@@ -59,17 +63,20 @@ function addDevice(name, pin) {
     if (!_.isInteger(pin)) throw new Error("Given pin is not a number")
     if (DB.used_pins.has(pin)) throw new Error("this pin is already used for another device");
 
-    DB.devices[DB.nextID] = {
+    const device = {
         id: DB.nextID,
         name: name,
         state: 0,
         pin: parseInt(pin)
     };
 
+    DB.devices[DB.nextID] = device;
+
     DB.nextID += 1;
     DB.used_pins.add(pin);
 
     saveDB();
+    return device;
 }
 
 function deleteDevice(id) {
@@ -101,6 +108,7 @@ readDB();
 // the exported files
 module.exports = {
     getDevices,
+    getDevice,
     updateDevice,
     addDevice,
     deleteDevice,
