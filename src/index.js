@@ -1,8 +1,15 @@
 const chalk = require('chalk')
-const app = require('./app')
+const server = require('./server')
+const sockets = require('./sockets')
 
-const PORT = 3000
-
-app.listen(PORT, () => {
-	console.log(chalk.blue(`Server running on port ${PORT}...`))
+process.on('SIGTERM', () => server.close())
+process.on('uncaughtException', (e) => {
+	console.log(chalk.bgRed('Uncaught Error'))
+	console.log(chalk.red(e.stack))
+	server.close()
 })
+
+// setInterval(() => {
+// 	const temperature = Math.floor(Math.random() * 100)
+// 	emit({ temperature })
+// }, 2000)
