@@ -13,9 +13,10 @@
     "chalk": "^2.4.2",
     "csv-load-sync": "^1.0.0",
     "express": "^4.16.4",
+    "joi": "^14.3.1",
     "lodash": "^4.17.11",
-    "socket.io": "^2.2.0",
-    "joi": "^14.3.1"
+    "node-cron": "^2.0.3",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.11"

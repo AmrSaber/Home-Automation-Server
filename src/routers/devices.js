@@ -37,17 +37,19 @@ router.post('/', (req, res) => {
 
 //update device
 router.patch('/:id', (req, res) => {
-	const schema = {
-		params: {
-			id: Joi.number().required()
-		},
-		body: {
-			state: Joi.boolean().required()
-		}
+	const bodySchema = {
+		state: Joi.number().integer().min(0).max(1).required()
 	}
-	const result = Joi.validate(req, schema)
-	if (result.error) return res.send({ error: result.error.details[0].message })
+	const paramsSchema = {
+		id: Joi.number().integer().required()
+	}
 
+	let result = Joi.validate(req.params, paramsSchema)
+	if (result.error) return res.send({ error: result.error.details[0].message })
+	
+	result = Joi.validate(req.body, bodySchema)
+	if (result.error) return res.send({ error: result.error.details[0].message })
+	
 	let { id } = req.params
 	let { state } = req.body
 	id = parseInt(id)

@@ -1,8 +1,10 @@
 const fs = require('fs');
 const path = require('path')
-
 const loader = require('csv-load-sync');
 const _ = require('lodash');
+
+const sockets = require('../sockets')
+const { TAG_DEVICE, TAG_TEMPERATURE } = require('../constants')
 
 const fileName = path.join(__dirname, './devices.csv');
 const fileHeader = 'id,name,state,pin\n'
@@ -56,6 +58,7 @@ function updateDevice(id, state) {
     if (state > 1 || state < 0) throw new Error("value of state must be either 0:OFF, 1:ON");
     DB.devices[id].state = state;
     saveDB();
+    sockets.emit(TAG_DEVICE, DB.devices[id])
 }
 
 function addDevice(name, pin) {
@@ -91,7 +94,7 @@ function deleteDevice(id) {
 function setTemperature(temp) {
     if (!_.isNumber(temp)) throw new Error('Temperature must be a number')
     DB.temperature = parseFloat(temp);
-    
+    sockets.emit(TAG_TEMPERATURE, { temperature: DB.temperature })    
 }
 
 function getTemperature() {
