@@ -11,5 +11,5 @@ process.on('uncaughtException', (e) => {
 
 // setInterval(() => {
 // 	const temperature = Math.floor(Math.random() * 100)
-// 	emit({ temperature })
+// 	sockets.emit('temperature', { temperature })
 // }, 2000)

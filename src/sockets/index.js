@@ -1,4 +1,6 @@
+const chalk = require('chalk')
 const SocketServer = require('socket.io')
+
 const server = require('../server')
 
 const io = new SocketServer(server, {
@@ -7,16 +9,17 @@ const io = new SocketServer(server, {
 })
 
 io.on('connection', () => {
-    console.log(chalk.green('New socket connection'))
+    console.log(chalk.bgBlue('New socket connection'))
 })
 
 io.on('disconnection', () => {
-    console.log(chalk.yellow('Socket disconnection'))
+    console.log(chalk.bgGreen('Socket disconnection'))
 })
 
-const emit = (data) => {
-    console.log(chalk.yellow('Emit: ' + JSON.stringify(data, null, 2)))
-    io.sockets.emit(data)
+const emit = (tag, data) => {
+    console.log(chalk.bgYellow('Emit'))
+    console.log(chalk.yellow(JSON.stringify(data, null, 2)))
+    io.emit(tag, data)
 }
 
 module.exports = {
