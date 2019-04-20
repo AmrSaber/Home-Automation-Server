@@ -4,7 +4,7 @@
   "description": "Back-end for home automation project with back-end on raspberry pi",
   "main": "src/index.js",
   "scripts": {
-    "start:ras": "RAS=1 node src/index.js",
+    "start:raspi": "RAS_PI=1 node src/index.js",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },

@@ -1,5 +1,3 @@
-if (!process.env.RAS) return
-
 const { Gpio } = require('onoff')
 
 const writePin = (pin, state) => {

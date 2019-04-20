@@ -64,7 +64,7 @@ function updateDevice(id, state) {
     const device = DB.devices[id]
     sockets.emit(TAG_DEVICE, device)
 
-    if (process.env.RAS) raspberry.writePin(device.pin, device.state)
+    if (process.env.RAS_PI) raspberry.writePin(device.pin, device.state)
 }
 
 function addDevice(name, pin) {
@@ -86,14 +86,14 @@ function addDevice(name, pin) {
 
     saveDB();
 
-    if (process.env.RAS) raspberry.writePin(device.pin, device.state)
+    if (process.env.RAS_PI) raspberry.writePin(device.pin, device.state)
     
     return device;
 }
 
 function deleteDevice(id) {
     if (DB.devices.hasOwnProperty(id)) {
-        if (process.env.RAS) raspberry.writePin(DB.devices[id].pin, 0)
+        if (process.env.RAS_PI) raspberry.writePin(DB.devices[id].pin, 0)
         DB.used_pins.delete(DB.devices[id].pin);
         delete DB.devices[id];
     }
