@@ -91,6 +91,7 @@ function deleteDevice(id) {
 function setTemperature(temp) {
     if (!_.isNumber(temp)) throw new Error('Temperature must be a number')
     DB.temperature = parseFloat(temp);
+    
 }
 
 function getTemperature() {

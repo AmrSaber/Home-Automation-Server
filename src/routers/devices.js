@@ -1,5 +1,7 @@
 const express = require('express')
+const Joi = require('joi')
 const db = require('../db')
+
 
 const router = new express.Router()
 
@@ -10,11 +12,24 @@ router.get('/', (req, res) => {
 
 //get device
 router.get('/:id', (req, res) => {
+	const schema = {
+		id: Joi.number().required()
+	}
+	const result = Joi.validate(req.params, schema)
+	if (result.error) return res.send({ error: result.error.details[0].message })
+
 	res.send({ data: db.getDevice(req.params.id) })
 })
 
 //add device
 router.post('/', (req, res) => {
+	const schema = {
+		name: Joi.string().min(3).required(),
+		pin: Joi.number().required()
+	}
+	const result = Joi.validate(req.body, schema)
+	if (result.error) return res.send({ error: result.error.details[0].message })
+
 	const { name, pin } = req.body
 	const device = db.addDevice(name, parseInt(pin))
 	res.send({ data: device })
@@ -22,6 +37,17 @@ router.post('/', (req, res) => {
 
 //update device
 router.patch('/:id', (req, res) => {
+	const schema = {
+		params: {
+			id: Joi.number().required()
+		},
+		body: {
+			state: Joi.boolean().required()
+		}
+	}
+	const result = Joi.validate(req, schema)
+	if (result.error) return res.send({ error: result.error.details[0].message })
+
 	let { id } = req.params
 	let { state } = req.body
 	id = parseInt(id)
@@ -32,13 +58,16 @@ router.patch('/:id', (req, res) => {
 
 //delete device 
 router.delete('/:id', (req, res) => {
+	const schema = {
+		id: Joi.number().required()
+	}
+	const result = Joi.validate(req.params, schema)
+	if (result.error) return res.send({ error: result.error.details[0].message })
+
 	const { id } = req.params
 	const device = db.getDevice(id)
 	db.deleteDevice(id)
 	res.send({ data: device })
 })
-
-//get tempratur 
-
 
 module.exports = router
