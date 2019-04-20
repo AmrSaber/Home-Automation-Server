@@ -6,7 +6,7 @@ const _ = require('lodash');
 const raspberry = require('../raspberry')
 
 const sockets = require('../sockets')
-const { TAG_DEVICE, TAG_TEMPERATURE } = require('../constants')
+const { TAG_DEVICE_UPDATE, TAG_DEVICES_UPDATE, TAG_TEMPERATURE } = require('../constants')
 
 const fileName = path.join(__dirname, './devices.csv');
 const fileHeader = 'id,name,state,pin\n'
@@ -62,7 +62,7 @@ function updateDevice(id, state) {
     saveDB();
 
     const device = DB.devices[id]
-    sockets.emit(TAG_DEVICE, device)
+    sockets.emit(TAG_DEVICE_UPDATE, device)
 
     if (process.env.RAS_PI) raspberry.writePin(device.pin, device.state)
 }
@@ -85,9 +85,10 @@ function addDevice(name, pin) {
     DB.used_pins.add(pin);
 
     saveDB();
+    sockets.emit(TAG_DEVICES_UPDATE, getDevices())
 
     if (process.env.RAS_PI) raspberry.writePin(device.pin, device.state)
-    
+
     return device;
 }
 
@@ -98,13 +99,15 @@ function deleteDevice(id) {
         delete DB.devices[id];
     }
     else throw new Error("no device with given id");
+
     saveDB();
+    sockets.emit(TAG_DEVICES_UPDATE, getDevices())
 }
 
 function setTemperature(temp) {
     if (!_.isNumber(temp)) throw new Error('Temperature must be a number')
     DB.temperature = parseFloat(temp);
-    sockets.emit(TAG_TEMPERATURE, { temperature: DB.temperature })    
+    sockets.emit(TAG_TEMPERATURE, { temperature: DB.temperature })
 }
 
 function getTemperature() {

@@ -16,8 +16,11 @@ io.on('disconnection', () => {
 })
 
 const emit = (tag, data) => {
-    console.log(chalk.bgYellow('Emit'))
-    console.log(chalk.yellow(JSON.stringify(data, null, 2)))
+    console.log(
+        (new Date()).toISOString() + ': ' +
+        chalk.bgYellow('Emit') + ' ' +
+        chalk.yellow(JSON.stringify(data))
+    )
     io.emit(tag, data)
 }
 
