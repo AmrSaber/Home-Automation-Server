@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Back-end for home automation project with back-end on raspberry pi",
   "main": "src/index.js",
+  "repository":"github:AmrSaber/Home-Automation-Server",
   "scripts": {
     "start:raspi": "RAS_PI=1 node src/index.js",
     "start": "node src/index.js",
