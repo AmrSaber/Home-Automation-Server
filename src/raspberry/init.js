@@ -1,5 +1,5 @@
-const db = require('db/index');
-const ras = require('index');
+const db = require('../db');
+const ras = require('./index');
 
 let Devices = db.getDevices();
 

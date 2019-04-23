@@ -10,6 +10,7 @@ const { TAG_DEVICE_UPDATE, TAG_DEVICES_UPDATE, TAG_TEMPERATURE } = require('../c
 
 const fileName = path.join(__dirname, './devices.csv');
 const fileHeader = 'id,name,state,pin\n';
+const validPins = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
 
 const DB = {
     temperature: -1,
@@ -130,5 +131,6 @@ module.exports = {
     addDevice,
     deleteDevice,
     setTemperature,
-    getTemperature
+    getTemperature,
+    validPins
 };

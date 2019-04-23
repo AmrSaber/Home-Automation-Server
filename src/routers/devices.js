@@ -23,9 +23,10 @@ router.get('/:id', (req, res) => {
 
 //add device
 router.post('/', (req, res) => {
+	console.log(db.validPins)
 	const schema = {
 		name: Joi.string().min(3).required(),
-		pin: Joi.number().required()
+		pin: Joi.number().valid(db.validPins).required()
 	}
 	const result = Joi.validate(req.body, schema)
 	if (result.error) return res.send({ error: result.error.details[0].message })
