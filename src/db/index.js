@@ -1,15 +1,15 @@
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
 const loader = require('csv-load-sync');
 const _ = require('lodash');
 
-const raspberry = require('../raspberry')
+const raspberry = require('../raspberry');
 
-const sockets = require('../sockets')
+const sockets = require('../sockets');
 const { TAG_DEVICE_UPDATE, TAG_DEVICES_UPDATE, TAG_TEMPERATURE } = require('../constants')
 
 const fileName = path.join(__dirname, './devices.csv');
-const fileHeader = 'id,name,state,pin\n'
+const fileHeader = 'id,name,state,pin\n';
 
 const DB = {
     temperature: -1,
@@ -94,7 +94,7 @@ function addDevice(name, pin) {
 
 function deleteDevice(id) {
     if (DB.devices.hasOwnProperty(id)) {
-        if (process.env.RAS_PI) raspberry.writePin(DB.devices[id].pin, 0)
+        if (process.env.RAS_PI) raspberry.writePin(DB.devices[id].pin, 0);
         DB.used_pins.delete(DB.devices[id].pin);
         delete DB.devices[id];
     }
@@ -105,7 +105,7 @@ function deleteDevice(id) {
 }
 
 function setTemperature(temp) {
-    if (!_.isNumber(temp)) throw new Error('Temperature must be a number')
+    if (!_.isNumber(temp)) throw new Error('Temperature must be a number');
     DB.temperature = parseFloat(temp);
     sockets.emit(TAG_TEMPERATURE, { temperature: DB.temperature })
 }
@@ -131,4 +131,4 @@ module.exports = {
     deleteDevice,
     setTemperature,
     getTemperature
-}
+};

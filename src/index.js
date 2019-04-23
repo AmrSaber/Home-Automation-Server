@@ -1,6 +1,9 @@
 const chalk = require('chalk')
 const cron = require('node-cron')
 
+// init board pins to database start state
+require('raspberry/init');
+
 const server = require('./server')
 require('./sockets')	// needed for the initialization of the sockets
 
