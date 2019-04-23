@@ -5,6 +5,7 @@ const server = require('../server')
 
 const io = new SocketServer(server, {
     cookie: false,
+    path: '/real-time-socket'
 })
 
 io.on('connection', () => {
