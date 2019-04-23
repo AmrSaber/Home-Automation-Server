@@ -4,7 +4,7 @@ const db = require('../db')
 const router = new express.Router()
 
 //get temperature 
-router.get('/temperature', (req, res) =>{
+router.get('/', (req, res) =>{
 	res.send({ temperature: db.getTemperature()})
 })
 
