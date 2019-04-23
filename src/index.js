@@ -1,13 +1,13 @@
 const chalk = require('chalk')
 const cron = require('node-cron')
 
-// init board pins to database start state
-require('./raspberry/init');
-
 const server = require('./server')
 require('./sockets')	// needed for the initialization of the sockets
 
 const db = require('./db')
+
+// init board pins to database start state
+require('./raspberry/init');
 
 if (process.env.RAS_PI) {
 	console.log(chalk.bgBlue('Running in Raspberry Pi mode'))
